@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonRepository {
+public class PersonRepository implements IPersonRepository {
     private static final String INSERT_PERSON_SQL = "INSERT INTO Person (Name, YearOfBirth) VALUES (?, ?)";
     private static final String SELECT_PERSON_SQL = "SELECT * FROM Person WHERE Id = ?";
     private static final String DELETE_PERSON_SQL = "DELETE FROM Person WHERE Id = ?";

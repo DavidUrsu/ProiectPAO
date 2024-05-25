@@ -7,12 +7,12 @@ import java.util.List;
 
 public class Library {
     private static Library instance;
-    private PersonRepository personRepository;
-    private BookRepository bookRepository;
+    private PersonService personService;
+    private BookService bookService;
 
     private Library() {
-        personRepository = new PersonRepository();
-        bookRepository = new BookRepository();
+        personService = new PersonService(new PersonRepository());
+        bookService = new BookService(new BookRepository());
     }
 
     public static Library getInstance() {
@@ -23,53 +23,43 @@ public class Library {
     }
 
     public void createPerson(String name, int yearOfBirth) {
-        try {
-            // check if the person already exists
-            if (personRepository.readPersonByName(name) != null) {
-                throw new PersonExistsException("Person with name " + name + " already exists");
-            }
-            personRepository.createPerson(name, yearOfBirth);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (PersonExistsException e) {
-            System.out.println(e.getMessage());
-        }
+        personService.createPerson(name, yearOfBirth);
     }
 
     public void deletePerson(String name) {
-        try {
-            Person person = personRepository.readPersonByName(name);
-            if (person == null) {
-                throw new InvalidUserException("Person with name " + name + " not found");
-            }
-
-            personRepository.deletePerson(person.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (InvalidUserException e) {
-            System.out.println(e.getMessage());
-        }
+        personService.deletePerson(name);
     }
 
     public void modifyPerson(int id, String newName, int newYearOfBirth) {
-        try {
-            Person person = personRepository.readPersonById(id);
-            if (person == null) {
-                throw new InvalidUserException("Person with id " + id + " not found");
-            }
-
-            person.setName(newName);
-            person.setYearOfBirth(newYearOfBirth);
-            personRepository.updatePerson(person);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (InvalidUserException e) {
-            System.out.println(e.getMessage());
-        }
+        personService.modifyPerson(id, newName, newYearOfBirth);
     }
 
     public List<Person> getAllPersons() throws SQLException {
-        return personRepository.readAllPeople();
+        return personService.getAllPersons();
+    }
+
+    // Book methods
+    public void createBook(String title, int authorId) {
+        bookService.createBook(title, authorId);
+    }
+
+    public void deleteBook(int id) {
+        bookService.deleteBook(id);
+    }
+
+    public void modifyBook(int id, String newTitle, int newAuthorId) {
+        bookService.modifyBook(id, newTitle, newAuthorId);
+    }
+
+    public List<Book> getAllBooks() {
+        return bookService.getAllBooks();
+    }
+
+    public List<Book> getAllBooksByAuthor(int authorId) {
+        return bookService.getAllBooksByAuthor(authorId);
+    }
+
+    public List<Book> getAllBooksByTitle(String title) {
+        return bookService.getAllBooksByTitle(title);
     }
 }
