@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class User extends Person{
+public class User extends Person {
     private List<Book> borrowedBooks;
 
-    public User(String name, int yearOfBirth) {
-        super(name, yearOfBirth);
+    public User(int id, String name, int yearOfBirth) {
+        super(id, name, yearOfBirth);
         borrowedBooks = new ArrayList<>();
     }
 

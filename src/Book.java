@@ -1,17 +1,24 @@
-public class Book extends AbstractEntity{
+public class Book extends AbstractEntity {
     private final String title;
-    private final Person author;
+    private final int authorId;
+    private final boolean isDestroyed;
 
-    public Book(String title, Person author) {
+    public Book(int id, String title, int authorId, boolean isDestroyed) {
+        super(id);
         this.title = title;
-        this.author = author;
+        this.authorId = authorId;
+        this.isDestroyed = isDestroyed;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public Person getAuthor() {
-        return author;
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
     }
 }
