@@ -3,11 +3,11 @@ public class Book extends AbstractEntity {
     private final int authorId;
     private final boolean isDestroyed;
 
-    public Book(int id, String title, int authorId) {
+    public Book(int id, String title, int authorId, boolean isDestroyed) {
         super(id);
         this.title = title;
         this.authorId = authorId;
-        this.isDestroyed = false;
+        this.isDestroyed = isDestroyed;
     }
 
     public String getTitle() {

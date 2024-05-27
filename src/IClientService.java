@@ -8,4 +8,5 @@ public interface IClientService {
     Client getClientByName(String name);
     List<Client> getClientsByYearOfBirth(int yearOfBirth);
     List<Client> getClientsByActive(boolean isActive);
+    Client getClientById(int id);
 }

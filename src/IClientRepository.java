@@ -6,6 +6,7 @@ public interface IClientRepository {
     List<Client> getAllClients();
     Client getClientByBadgeNumber(int badgeNumber);
     Client getClientByName(String name);
+    Client getClientById(int id);
     List<Client> getClientsByYearOfBirth(int yearOfBirth);
     List<Client> getClientsByActive(boolean isActive);
 }

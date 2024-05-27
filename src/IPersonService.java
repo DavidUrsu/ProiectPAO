@@ -6,4 +6,6 @@ public interface IPersonService {
     void deletePerson(String name);
     void modifyPerson(int id, String newName, int newYearOfBirth);
     List<Person> getAllPersons() throws SQLException;
+    Person getPersonById(int id);
+    Person getPersonByName(String name);
 }

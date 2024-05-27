@@ -5,7 +5,7 @@ import java.util.List;
 public class BookRepository implements IBookRepository {
     private static final String INSERT_BOOK_SQL = "INSERT INTO Book (Title, AuthorId) VALUES (?, ?)";
     private static final String SELECT_BOOK_SQL = "SELECT * FROM Book WHERE Id = ?";
-    private static final String DELETE_BOOK_SQL = "UPDATE Book SET IsDeleted = 1 WHERE Id = ?";
+    private static final String DESTROY_BOOK_SQL = "UPDATE Book SET IsDestroyed = 1 WHERE Id = ?";
     private static final String UPDATE_BOOK_SQL = "UPDATE Book SET Title = ?, AuthorId = ? WHERE Id = ?";
     private static final String SELECT_ALL_BOOKS_SQL = "SELECT * FROM Book";
     private static final String SELECT_ALL_BOOKS_BY_AUTHOR_SQL = "SELECT * FROM Book WHERE AuthorId = ?";
@@ -36,7 +36,8 @@ public class BookRepository implements IBookRepository {
                 int bookId = rs.getInt("Id");
                 String title = rs.getString("Title");
                 int authorId = rs.getInt("AuthorId");
-                book = new Book(bookId, title, authorId);
+                boolean isDestroyed = rs.getBoolean("IsDestroyed");
+                book = new Book(bookId, title, authorId, isDestroyed);
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -45,9 +46,9 @@ public class BookRepository implements IBookRepository {
     }
 
     @Override
-    public void deleteBook(int id) {
+    public void destroyBook(int id) {
         try (Connection connection = Database.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BOOK_SQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(DESTROY_BOOK_SQL)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
@@ -56,12 +57,12 @@ public class BookRepository implements IBookRepository {
     }
 
     @Override
-    public void updateBook(Book book) {
+    public void updateBook(int id, int authorId, String title) {
         try (Connection connection = Database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_SQL)) {
-            preparedStatement.setString(1, book.getTitle());
-            preparedStatement.setInt(2, book.getAuthorId());
-            preparedStatement.setInt(3, book.getId());
+            preparedStatement.setString(1, title);
+            preparedStatement.setInt(2, authorId);
+            preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -78,7 +79,8 @@ public class BookRepository implements IBookRepository {
                 int id = rs.getInt("Id");
                 String title = rs.getString("Title");
                 int authorId = rs.getInt("AuthorId");
-                books.add(new Book(id, title, authorId));
+                boolean isDestroyed = rs.getBoolean("IsDestroyed");
+                books.add(new Book(id, title, authorId, isDestroyed));
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -97,7 +99,8 @@ public class BookRepository implements IBookRepository {
             while (rs.next()) {
                 int id = rs.getInt("Id");
                 String title = rs.getString("Title");
-                books.add(new Book(id, title, authorId));
+                boolean isDestroyed = rs.getBoolean("IsDestroyed");
+                books.add(new Book(id, title, authorId, isDestroyed));
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -116,7 +119,8 @@ public class BookRepository implements IBookRepository {
             while (rs.next()) {
                 int id = rs.getInt("Id");
                 int authorId = rs.getInt("AuthorId");
-                books.add(new Book(id, title, authorId));
+                boolean isDestroyed = rs.getBoolean("IsDestroyed");
+                books.add(new Book(id, title, authorId, isDestroyed));
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

@@ -8,7 +8,7 @@ import java.util.List;
 public class PersonRepository implements IPersonRepository {
     private static final String INSERT_PERSON_SQL = "INSERT INTO Person (Name, YearOfBirth) VALUES (?, ?)";
     private static final String SELECT_PERSON_SQL = "SELECT * FROM Person WHERE Id = ?";
-    private static final String DELETE_PERSON_SQL = "DELETE FROM Person WHERE Id = ?";
+    private static final String DELETE_PERSON_SQL = "UPDATE Person SET Name = 'Deleted Person' WHERE Id = ?";
     private static final String UPDATE_PERSON_SQL = "UPDATE Person SET Name = ?, YearOfBirth = ? WHERE Id = ?";
     private static final String SQL_DELETE_PERSON_BY_NAME = "DELETE FROM Person WHERE Name = ?";
     private static final String SQL_SELECT_ALL_PERSONS = "SELECT * FROM Person";
@@ -51,6 +51,11 @@ public class PersonRepository implements IPersonRepository {
 
     public Person readPersonByName(String name) throws SQLException {
         Person person = null;
+
+        // if the name in "Deleted Person" return null
+        if (name.equals("Deleted Person")) {
+            return null;
+        }
 
         try (Connection connection = Database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Person WHERE Name = ?")) {
@@ -112,7 +117,7 @@ public class PersonRepository implements IPersonRepository {
         }
     }
 
-    public List<Person> readAllPeople() throws SQLException {
+    public List<Person> readAllPeople() {
         List<Person> persons = new ArrayList<>();
 
         try (Connection connection = Database.getConnection();
@@ -128,7 +133,7 @@ public class PersonRepository implements IPersonRepository {
                 Person person = new Person(id, name, yearOfBirth);
                 persons.add(person);
             }
-        } catch (ClassNotFoundException e) {
+        } catch ( ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
 

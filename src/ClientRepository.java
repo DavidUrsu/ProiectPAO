@@ -90,6 +90,22 @@ public class ClientRepository implements IClientRepository {
     }
 
     @Override
+    public Client getClientById(int id) {
+        String sql = "SELECT * FROM Client INNER JOIN Person ON Client.PersonId = Person.Id WHERE Client.PersonId = ?";
+        try (Connection connection = Database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Client(resultSet.getInt("PersonId"), resultSet.getString("Name"), resultSet.getInt("YearOfBirth"), resultSet.getBoolean("IsActive"), resultSet.getInt("BadgeNumber"));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public List<Client> getClientsByYearOfBirth(int yearOfBirth) {
         List<Client> clients = new ArrayList<>();
         String sql = "SELECT * FROM Client INNER JOIN Person ON Client.PersonId = Person.Id WHERE Person.YearOfBirth = ?";

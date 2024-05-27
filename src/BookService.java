@@ -1,7 +1,7 @@
 import java.sql.SQLException;
 import java.util.List;
 
-public class BookService {
+public class BookService implements IBookService{
     private final IBookRepository bookRepository;
     private final IPersonRepository personRepository;
 
@@ -14,8 +14,8 @@ public class BookService {
         bookRepository.insertBook(title, authorId);
     }
 
-    public void deleteBook(int id) {
-        bookRepository.deleteBook(id);
+    public void destroyBook(int id) {
+        bookRepository.destroyBook(id);
     }
 
     public void modifyBook(int id, String newTitle, int newAuthorId) {
@@ -25,7 +25,7 @@ public class BookService {
             if (book == null) {
                 throw new InvalidBookException("Book does not exist");
             }
-            bookRepository.updateBook(new Book(id, newTitle, newAuthorId));
+            bookRepository.updateBook(id, newAuthorId, newTitle);
         } catch(InvalidBookException e) {
             System.out.println(e.getMessage());
         }
@@ -50,5 +50,19 @@ public class BookService {
 
     public List<Book> getAllBooksByTitle(String title) {
         return bookRepository.selectAllBooksByTitle(title);
+    }
+
+    @Override
+    public Book getBookById(int id) {
+        try {
+            Book book = bookRepository.selectBook(id);
+            if (book == null) {
+                throw new InvalidBookException("Book does not exist");
+            }
+            return book;
+        } catch (InvalidBookException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }

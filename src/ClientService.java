@@ -87,4 +87,19 @@ public class ClientService implements IClientService{
     public List<Client> getClientsByActive(boolean isActive) {
         return clientRepository.getClientsByActive(isActive);
     }
+
+    @Override
+    public Client getClientById(int id) {
+        // check if the client exists
+        try {
+            if (clientRepository.getClientById(id) == null) {
+                System.out.println("Client does not exist.");
+                throw new InvalidClientException("Client does not exist.");
+            }
+            return clientRepository.getClientById(id);
+        } catch (InvalidClientException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

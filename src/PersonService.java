@@ -2,7 +2,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class PersonService implements IPersonService{
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -55,7 +55,27 @@ public class PersonService implements IPersonService{
         }
     }
 
-    public List<Person> getAllPersons() throws SQLException {
+    public List<Person> getAllPersons() {
         return personRepository.readAllPeople();
+    }
+
+    @Override
+    public Person getPersonById(int id) {
+        try {
+            return personRepository.readPersonById(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Person getPersonByName(String name) {
+        try {
+            return personRepository.readPersonByName(name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
