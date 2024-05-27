@@ -22,6 +22,22 @@ public class Library {
         return instance;
     }
 
+    public BookService getBookService() {
+        return bookService;
+    }
+
+    public PersonService getPersonService() {
+        return personService;
+    }
+
+    public ClientService getClientService() {
+        return clientService;
+    }
+
+    public BorrowOperationService getBorrowOperationService() {
+        return borrowOperationService;
+    }
+
     // Read methods
 
     private int readInt(Scanner scanner) {

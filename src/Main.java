@@ -14,6 +14,7 @@ public class Main {
             System.out.println("Book - to manage books");
             System.out.println("Client - to manage clients");
             System.out.println("Borrow - to manage borrow operations");
+            System.out.println("Logs - to create logs");
             System.out.println("Exit - to exit the program");
             String command = scanner.nextLine();
 
@@ -130,6 +131,19 @@ public class Main {
                     case "getall":
                         library.borrowGetall();
                         scanner.nextLine();
+                        break;
+                    default:
+                        System.out.println("Invalid action. Try again.");
+                        break;
+                }
+            } else if ( command.equalsIgnoreCase("Logs") ) {
+                System.out.println("----------------------------------------");
+                System.out.println("Enter action (booksLog):");
+                String action = scanner.nextLine();
+
+                switch ( action.toLowerCase() ) {
+                    case "bookslog":
+                        ReportService.getInstance().bookDatabase();
                         break;
                     default:
                         System.out.println("Invalid action. Try again.");
