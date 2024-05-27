@@ -21,6 +21,7 @@ public class PersonRepository implements IPersonRepository {
             preparedStatement.setInt(2, yearOfBirth);
 
             preparedStatement.executeUpdate();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -35,6 +36,7 @@ public class PersonRepository implements IPersonRepository {
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
 
             if (resultSet.next()) {
                 String name = resultSet.getString("Name");
@@ -63,6 +65,7 @@ public class PersonRepository implements IPersonRepository {
             preparedStatement.setString(1, name);
 
             ResultSet resultSet = preparedStatement.executeQuery();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
 
             if (resultSet.next()) {
                 int id = resultSet.getInt("Id");
@@ -84,6 +87,8 @@ public class PersonRepository implements IPersonRepository {
             preparedStatement.setInt(1, id);
 
             preparedStatement.executeUpdate();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -99,6 +104,8 @@ public class PersonRepository implements IPersonRepository {
             preparedStatement.setInt(3, person.getId());
 
             preparedStatement.executeUpdate();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
+
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -112,6 +119,8 @@ public class PersonRepository implements IPersonRepository {
             preparedStatement.setString(1, name);
 
             preparedStatement.executeUpdate();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
+
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -124,6 +133,8 @@ public class PersonRepository implements IPersonRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_ALL_PERSONS)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
+
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("Id");

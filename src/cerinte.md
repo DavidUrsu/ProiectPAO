@@ -6,7 +6,6 @@
     - [x] Exception handling
     - [x] Custom exceptions
     - [ ] Comparators
-    - pot face o sortare intre clienti care au inchiriat cele mai multe carti
     - [ ] Lambda expressions
     - [x] It is not mandatory to use arrays, you can use only collections in the project implementation
     - [x] String builder/buffer

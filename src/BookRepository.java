@@ -11,7 +11,6 @@ public class BookRepository implements IBookRepository {
     private static final String SELECT_ALL_BOOKS_BY_AUTHOR_SQL = "SELECT * FROM Book WHERE AuthorId = ?";
     private static final String SELECT_ALL_BOOKS_BY_TITLE_SQL = "SELECT * FROM Book WHERE Title = ?";
 
-
     @Override
     public void insertBook(String title, int authorId) {
         try (Connection connection = Database.getConnection();
@@ -19,6 +18,7 @@ public class BookRepository implements IBookRepository {
             preparedStatement.setString(1, title);
             preparedStatement.setInt(2, authorId);
             preparedStatement.executeUpdate();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -31,6 +31,7 @@ public class BookRepository implements IBookRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BOOK_SQL)) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
 
             while (rs.next()) {
                 int bookId = rs.getInt("Id");
@@ -51,6 +52,7 @@ public class BookRepository implements IBookRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(DESTROY_BOOK_SQL)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -64,6 +66,7 @@ public class BookRepository implements IBookRepository {
             preparedStatement.setInt(2, authorId);
             preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -75,6 +78,7 @@ public class BookRepository implements IBookRepository {
         try (Connection connection = Database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKS_SQL);
              ResultSet rs = preparedStatement.executeQuery()) {
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
             while (rs.next()) {
                 int id = rs.getInt("Id");
                 String title = rs.getString("Title");
@@ -95,6 +99,7 @@ public class BookRepository implements IBookRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKS_BY_AUTHOR_SQL)) {
             preparedStatement.setInt(1, authorId);
             ResultSet rs = preparedStatement.executeQuery();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
 
             while (rs.next()) {
                 int id = rs.getInt("Id");
@@ -115,6 +120,7 @@ public class BookRepository implements IBookRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKS_BY_TITLE_SQL)) {
             preparedStatement.setString(1, title);
             ResultSet rs = preparedStatement.executeQuery();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
 
             while (rs.next()) {
                 int id = rs.getInt("Id");

@@ -11,6 +11,7 @@ public class ClientRepository implements IClientRepository {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, person.getId());
             statement.executeUpdate();
+            ReportService.getInstance().databaseAudit(statement.toString());
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -24,6 +25,7 @@ public class ClientRepository implements IClientRepository {
             statement.setBoolean(1, isActive);
             statement.setInt(2, badgeNumber);
             statement.executeUpdate();
+            ReportService.getInstance().databaseAudit(statement.toString());
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -36,6 +38,7 @@ public class ClientRepository implements IClientRepository {
         try (Connection connection = Database.getConnection();
             Statement statement = connection.createStatement()){
             ResultSet resultSet = statement.executeQuery(sql);
+            ReportService.getInstance().databaseAudit(statement.toString());
             while (resultSet.next()) {
                 Client client = new Client(resultSet.getInt("PersonId"), resultSet.getString("Name"), resultSet.getInt("YearOfBirth"), resultSet.getBoolean("IsActive"), resultSet.getInt("BadgeNumber"));
                 clients.add(client);
@@ -53,6 +56,7 @@ public class ClientRepository implements IClientRepository {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, badgeNumber);
             ResultSet resultSet = statement.executeQuery();
+            ReportService.getInstance().databaseAudit(statement.toString());
             if (resultSet.next()) {
                 return new Client(resultSet.getInt("PersonId"), resultSet.getString("Name"), resultSet.getInt("YearOfBirth"), resultSet.getBoolean("IsActive"), resultSet.getInt("BadgeNumber"));
             }
@@ -73,11 +77,13 @@ public class ClientRepository implements IClientRepository {
 
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
+            ReportService.getInstance().databaseAudit(statement.toString());
 
             if (resultSet.next()) {
                 try (PreparedStatement statement2 = connection.prepareStatement(sql)) {
                     statement2.setInt(1, resultSet.getInt("Id"));
                     ResultSet resultSet2 = statement2.executeQuery();
+                    ReportService.getInstance().databaseAudit(statement2.toString());
                     if (resultSet2.next()) {
                         client = new Client(resultSet2.getInt("PersonId"), resultSet.getString("Name"), resultSet.getInt("YearOfBirth"), resultSet2.getBoolean("IsActive"), resultSet2.getInt("BadgeNumber"));
                     }
@@ -96,6 +102,7 @@ public class ClientRepository implements IClientRepository {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
+            ReportService.getInstance().databaseAudit(statement.toString());
             if (resultSet.next()) {
                 return new Client(resultSet.getInt("PersonId"), resultSet.getString("Name"), resultSet.getInt("YearOfBirth"), resultSet.getBoolean("IsActive"), resultSet.getInt("BadgeNumber"));
             }
@@ -114,6 +121,7 @@ public class ClientRepository implements IClientRepository {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, yearOfBirth);
             ResultSet resultSet = statement.executeQuery();
+            ReportService.getInstance().databaseAudit(statement.toString());
             while (resultSet.next()) {
                 Client client = new Client(resultSet.getInt("PersonId"), resultSet.getString("Name"), resultSet.getInt("YearOfBirth"), resultSet.getBoolean("IsActive"), resultSet.getInt("BadgeNumber"));
                 clients.add(client);
@@ -133,6 +141,7 @@ public class ClientRepository implements IClientRepository {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, isActive);
             ResultSet resultSet = statement.executeQuery();
+            ReportService.getInstance().databaseAudit(statement.toString());
             while (resultSet.next()) {
                 Client client = new Client(resultSet.getInt("PersonId"), resultSet.getString("Name"), resultSet.getInt("YearOfBirth"), resultSet.getBoolean("IsActive"), resultSet.getInt("BadgeNumber"));
                 client.setActive(resultSet.getBoolean("IsActive"));

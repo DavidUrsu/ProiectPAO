@@ -17,6 +17,7 @@ public class BorrowOperationRepository implements  IBorrowOperationRepository{
             preparedStatement.setInt(1, clientId);
             preparedStatement.setInt(2, bookId);
             preparedStatement.executeUpdate();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -29,6 +30,7 @@ public class BorrowOperationRepository implements  IBorrowOperationRepository{
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BORROWS_BY_CLIENT_ID_SQL)) {
             preparedStatement.setInt(1, clientId);
             ResultSet rs = preparedStatement.executeQuery();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
             while (rs.next()) {
                 int borrowId = rs.getInt("Id");
                 LocalDate borrowDate = rs.getDate("BorrowDate").toLocalDate();
@@ -50,6 +52,7 @@ public class BorrowOperationRepository implements  IBorrowOperationRepository{
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_OF_BORROW_BY_BOOK_ID_SQL)) {
             preparedStatement.setInt(1, bookId);
             ResultSet rs = preparedStatement.executeQuery();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
             while (rs.next()) {
                 if (rs.getDate("ReturnDate") == null) {
                     clientId = rs.getInt("ClientId");
@@ -68,6 +71,7 @@ public class BorrowOperationRepository implements  IBorrowOperationRepository{
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_RETURN_DATE_SQL)) {
             preparedStatement.setInt(1, borrowId);
             preparedStatement.executeUpdate();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -79,6 +83,7 @@ public class BorrowOperationRepository implements  IBorrowOperationRepository{
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BORROW_BY_ID_SQL)) {
             preparedStatement.setInt(1, borrowId);
             ResultSet rs = preparedStatement.executeQuery();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
             if (rs.next()) {
                 LocalDate borrowDate = rs.getDate("BorrowDate").toLocalDate();
                 LocalDate returnDate = rs.getDate("ReturnDate") != null ? rs.getDate("ReturnDate").toLocalDate() : null;
@@ -99,6 +104,7 @@ public class BorrowOperationRepository implements  IBorrowOperationRepository{
         try (Connection connection = Database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM BorrowOperation")) {
             ResultSet rs = preparedStatement.executeQuery();
+            ReportService.getInstance().databaseAudit(preparedStatement.toString());
             while (rs.next()) {
                 int borrowId = rs.getInt("Id");
                 LocalDate borrowDate = rs.getDate("BorrowDate").toLocalDate();
