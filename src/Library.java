@@ -7,15 +7,17 @@ import java.util.List;
 
 public class Library {
     private static Library instance;
-    private PersonService personService;
-    private BookService bookService;
+    private final PersonService personService;
+    private final BookService bookService;
+    private final ClientService clientService;
 
     private Library() {
         personService = new PersonService(new PersonRepository());
         bookService = new BookService(new BookRepository());
+        clientService = new ClientService(new ClientRepository());
     }
 
-    public static Library getInstance() {
+    public static Library getInstance(){
         if (instance == null) {
             instance = new Library();
         }
@@ -61,5 +63,34 @@ public class Library {
 
     public List<Book> getAllBooksByTitle(String title) {
         return bookService.getAllBooksByTitle(title);
+    }
+
+    // Client methods
+    public void addClient(String name) {
+        clientService.addClient(name);
+    }
+
+    public void setClientActiveByBadgeNumber(int badgeNumber, boolean isActive) {
+        clientService.setClientActiveByBadgeNumber(badgeNumber, isActive);
+    }
+
+    public List<Client> getAllClients() {
+        return clientService.getAllClients();
+    }
+
+    public Client getClientByBadgeNumber(int badgeNumber) {
+        return clientService.getClientByBadgeNumber(badgeNumber);
+    }
+
+    public Client getClientByName(String name) {
+        return clientService.getClientByName(name);
+    }
+
+    public List<Client> getClientsByYearOfBirth(int yearOfBirth) {
+        return clientService.getClientsByYearOfBirth(yearOfBirth);
+    }
+
+    public List<Client> getClientsByActive(boolean isActive) {
+        return clientService.getClientsByActive(isActive);
     }
 }

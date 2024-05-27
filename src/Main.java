@@ -12,6 +12,7 @@ public class Main {
             System.out.println("Enter command:");
             System.out.println("Person - to manage persons");
             System.out.println("Book - to manage books");
+            System.out.println("Client - to manage clients");
             System.out.println("Exit - to exit the program");
             String command = scanner.nextLine();
 
@@ -173,8 +174,82 @@ public class Main {
                         System.out.println("Invalid action. Try again.");
                         break;
                 }
-            } else {
-                System.out.println("Invalid command. Try again.");
+            } else if (command.equalsIgnoreCase("Client")) {
+                System.out.println("----------------------------------------");
+                System.out.println("Enter action (create, setActive, getAll, getByBadgeNumber, getByName, getByYearOfBirth, getByActive):");
+                String action = scanner.nextLine();
+
+                switch (action.toLowerCase()) {
+                    case "create":
+                        System.out.println("Enter name:");
+                        String name = scanner.nextLine();
+
+                        library.addClient(name);
+                        break;
+                    case "setactive":
+                        System.out.println("Enter badge number:");
+                        int badgeNumber = scanner.nextInt();
+                        scanner.nextLine(); // consume newline
+
+                        System.out.println("Enter active status (true or false):");
+                        boolean isActive = scanner.nextBoolean();
+                        scanner.nextLine(); // consume newline
+
+                        library.setClientActiveByBadgeNumber(badgeNumber, isActive);
+                        break;
+                    case "getall":
+                        System.out.println("All clients:");
+                        for (Client client : library.getAllClients()) {
+                            System.out.println(client.getId() + "." + client.getName() + " | Badge number:" + client.getBadgeNumber() + " | Active status:" + client.isActive());
+                        }
+                        break;
+                    case "getbybadgenumber":
+                        System.out.println("Enter badge number:");
+                        int searchBadgeNumber = scanner.nextInt();
+                        scanner.nextLine(); // consume newline
+
+                        System.out.println("Client:");
+                        Client clientByBadgeNumber = library.getClientByBadgeNumber(searchBadgeNumber);
+                        if (clientByBadgeNumber != null) {
+                            System.out.println(clientByBadgeNumber.getId() + "." + clientByBadgeNumber.getName() + " | Badge number:" + clientByBadgeNumber.getBadgeNumber() + " | Active status:" + clientByBadgeNumber.isActive());
+                        }
+                        break;
+                    case "getbyname":
+                        System.out.println("Enter name:");
+                        String searchName = scanner.nextLine();
+
+                        System.out.println("Client:");
+                        Client clientByName = library.getClientByName(searchName);
+                        if (clientByName != null) {
+                            System.out.println(clientByName.getId() + "." + clientByName.getName() + " | Badge number:" + clientByName.getBadgeNumber() + " | Active status:" + clientByName.isActive());
+                        }
+                        break;
+                    case "getbyyearofbirth":
+                        System.out.println("Enter year of birth:");
+                        int searchYearOfBirth = scanner.nextInt();
+                        scanner.nextLine(); // consume newline
+
+                        System.out.println("Clients born in " + searchYearOfBirth + ":");
+                        for(Client client: library.getClientsByYearOfBirth(searchYearOfBirth)){
+                            System.out.println(client.getId() + "." + client.getName() + " | Badge number:" + client.getBadgeNumber() + " | Active status:" + client.isActive());
+                        }
+                        break;
+                    case "getbyactive":
+                        System.out.println("Enter active status (true or false):");
+                        boolean searchIsActive = scanner.nextBoolean();
+                        scanner.nextLine(); // consume newline
+
+                        System.out.println("Clients with active status " + searchIsActive + ":");
+                        for (Client client : library.getClientsByActive(searchIsActive)) {
+                            System.out.println(client.getId() + "." + client.getName() + " | Badge number:" + client.getBadgeNumber() + " | Active status:" + client.isActive());
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid action. Try again.");
+                        break;
+                } }else {
+                    System.out.println("Invalid command. Try again.");
+
             }
         }
 
